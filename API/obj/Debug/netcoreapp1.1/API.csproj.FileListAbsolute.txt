@@ -1,0 +1,8 @@
+/Users/adam/Documents/NearbyContent/API/bin/Debug/netcoreapp1.1/API.deps.json
+/Users/adam/Documents/NearbyContent/API/bin/Debug/netcoreapp1.1/API.runtimeconfig.json
+/Users/adam/Documents/NearbyContent/API/bin/Debug/netcoreapp1.1/API.runtimeconfig.dev.json
+/Users/adam/Documents/NearbyContent/API/bin/Debug/netcoreapp1.1/API.dll
+/Users/adam/Documents/NearbyContent/API/bin/Debug/netcoreapp1.1/API.pdb
+/Users/adam/Documents/NearbyContent/API/obj/Debug/netcoreapp1.1/API.AssemblyInfo.cs
+/Users/adam/Documents/NearbyContent/API/obj/Debug/netcoreapp1.1/API.dll
+/Users/adam/Documents/NearbyContent/API/obj/Debug/netcoreapp1.1/API.pdb
