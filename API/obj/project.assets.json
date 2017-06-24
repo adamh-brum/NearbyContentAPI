@@ -10016,16 +10016,16 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/adam/Documents/NearbyContent/API/API.csproj",
+      "projectUniqueName": "/Users/adam/Documents/Development/dotNetCore/NearbyContentAPI/API/API.csproj",
       "projectName": "API",
-      "projectPath": "/Users/adam/Documents/NearbyContent/API/API.csproj",
-      "outputPath": "/Users/adam/Documents/NearbyContent/API/obj/",
+      "projectPath": "/Users/adam/Documents/Development/dotNetCore/NearbyContentAPI/API/API.csproj",
+      "outputPath": "/Users/adam/Documents/Development/dotNetCore/NearbyContentAPI/API/obj/",
       "projectStyle": "PackageReference",
       "originalTargetFrameworks": [
         "netcoreapp1.1"
       ],
       "files": {
-        "lib/netcoreapp1.1/API.dll": "/Users/adam/Documents/NearbyContent/API/bin/placeholder/netcoreapp1.1/API.dll"
+        "lib/netcoreapp1.1/API.dll": "/Users/adam/Documents/Development/dotNetCore/NearbyContentAPI/API/bin/placeholder/netcoreapp1.1/API.dll"
       },
       "frameworks": {
         "netcoreapp1.1": {
