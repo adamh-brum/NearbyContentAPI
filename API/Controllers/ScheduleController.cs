@@ -7,6 +7,7 @@ using API.DataLogic.Models;
 using API.DataLogic;
 using Microsoft.AspNetCore.Mvc;
 using API.DataLogic.ViewModels;
+using API.Helpers;
 
 namespace API.Controllers
 {
@@ -58,8 +59,7 @@ namespace API.Controllers
         {
             var schedule = new List<BeaconSchedule>();
             var availability = this.dataLogic.GetFutureScheduledContent();
-
-            return schedule;
+            return BeaconScheduleGenerator.Generate(availability.ToList());
         }
 
         /// <summary>

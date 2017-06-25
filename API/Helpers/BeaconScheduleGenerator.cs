@@ -10,104 +10,92 @@ namespace API.Helpers
     {
         public static IList<BeaconSchedule> Generate(IList<BeaconAvailability> beaconAvailability)
         {
+            IList<BeaconSchedule> schedule = new List<BeaconSchedule>();
+            DateTime startTime = DateTime.Now.GetStartOfWeek();
+
             foreach (var beacon in beaconAvailability)
             {
-                BeaconSchedule beaconSchedule = new BeaconSchedule()
+                schedule.Add(new BeaconSchedule()
                 {
                     BeaconId = beacon.BeaconId,
-                    BeaconLocation = beacon.Location,
                     BeaconFriendlyName = beacon.FriendlyName,
-                    Timeslots = new List<Timeslot>()
-                };
+                    BeaconLocation = beacon.Location,
+                    Timeslots = PopulateWeeksForBeacon(beacon, startTime)
+                });
+            }
 
-                // Now populate the timeslots for this beacon based on week, day, hour
-                // Weeks always start on monday (yay added complexity)
-                var currentDay = DateTime.Now.DayOfWeek;
-                int firstWeekDays = 7;
-                switch (currentDay)
+            return schedule;
+        }
+
+        private static IList<Timeslot> PopulateWeeksForBeacon(BeaconAvailability beaconAvailability, DateTime startTime)
+        {
+            var slots = new List<Timeslot>();
+            DateTime currentDate = startTime;
+            while (currentDate < DateTime.Now.AddMonths(3))
+            {
+                Timeslot newTimeslot = new Timeslot();
+                newTimeslot.Start = currentDate;
+                newTimeslot.End = currentDate.AddDays(7);
+                newTimeslot.Unit = TimeslotUnit.Weeks;
+                newTimeslot.Bookings = beaconAvailability.Bookings.Where(b => b.Start >= newTimeslot.Start && b.End <= newTimeslot.End).Select(booking => new TimeslotBooking()
                 {
-                    case DayOfWeek.Monday:
-                        {
-                            firstWeekDays = 6;
-                            break;
-                        }
-                    case DayOfWeek.Tuesday:
-                        {
-                            firstWeekDays = 5;
-                            break;
-                        }
-                    case DayOfWeek.Wednesday:
-                        {
-                            firstWeekDays = 4;
-                            break;
-                        }
-                    case DayOfWeek.Thursday:
-                        {
-                            firstWeekDays = 3;
-                            break;
-                        }
-                    case DayOfWeek.Friday:
-                        {
-                            firstWeekDays = 2;
-                            break;
-                        }
-                    case DayOfWeek.Saturday:
-                        {
-                            firstWeekDays = 1;
-                            break;
-                        }
-                    case DayOfWeek.Sunday:
-                        {
-                            firstWeekDays = 0;
-                            break;
-                        }
-                }
+                    ContentId = booking.ContentId,
+                    ContentTitle = booking.Description
+                }).ToList();
+                newTimeslot.Timeslots = PopulateDaysOfWeekForBeacon(beaconAvailability, currentDate.Date, currentDate.AddDays(7).Date);
 
-                Timeslot firstWeek = new Timeslot()
+                currentDate = currentDate.AddDays(7);
+                slots.Add(newTimeslot);                
+            }
+
+            return slots;
+        }
+
+        private static IList<Timeslot> PopulateDaysOfWeekForBeacon(BeaconAvailability beaconAvailability, DateTime startDate, DateTime endTime)
+        {
+            var slots = new List<Timeslot>();
+            var currentDate = startDate;
+            while (currentDate < endTime)
+            {
+                Timeslot newTimeslot = new Timeslot();
+                newTimeslot.Start = currentDate;
+                newTimeslot.End = currentDate.AddDays(1);
+                newTimeslot.Unit = TimeslotUnit.Days;
+                newTimeslot.Bookings = beaconAvailability.Bookings.Where(b => b.Start >= newTimeslot.Start && b.End <= newTimeslot.End).Select(booking => new TimeslotBooking()
                 {
-                    // Always use "date" for dates so they start at midnight
-                    Start = DateTime.Now.Date,
-                    End = DateTime.Now.AddDays(firstWeekDays).Date,
-                    Unit = TimeslotUnit.Weeks,
-                    Timeslots = new List<Timeslot>()
-                };
+                    ContentId = booking.ContentId,
+                    ContentTitle = booking.Description
+                }).ToList();
+                newTimeslot.Timeslots = PopulateHoursOfDayForBeacon(beaconAvailability, currentDate.Date, currentDate.AddDays(1).Date);
 
-                // Check if there are any bookings for the duration of one week
-                var weeklyBookings = beacon.Bookings.Where(booking => booking.Start < firstWeek.Start && booking.End > firstWeek.End);
-                firstWeek.Bookings = weeklyBookings.Select(booking => new TimeslotBooking()
+                currentDate = currentDate.AddDays(1);
+                slots.Add(newTimeslot);                
+            }
+
+            return slots;
+        }
+
+        private static IList<Timeslot> PopulateHoursOfDayForBeacon(BeaconAvailability beaconAvailability, DateTime startDate, DateTime endTime)
+        {
+            var slots = new List<Timeslot>();
+            var currentDate = startDate;
+            while (currentDate < endTime)
+            {
+                Timeslot newTimeslot = new Timeslot();
+                newTimeslot.Start = currentDate;
+                newTimeslot.End = currentDate.AddHours(1);
+                newTimeslot.Unit = TimeslotUnit.Hours;
+                newTimeslot.Bookings = beaconAvailability.Bookings.Where(b => b.Start >= newTimeslot.Start && b.End <= newTimeslot.End).Select(booking => new TimeslotBooking()
                 {
                     ContentId = booking.ContentId,
                     ContentTitle = booking.Description
                 }).ToList();
 
-                // Add all the required days to the week
-                int day = 0;
-                while (day <= firstWeekDays)
-                {
-                    Timeslot slot = new Timeslot();
-                    slot.Unit = TimeslotUnit.Days;
-
-                    // Create start day and set to the date so it defaults to midnight
-                    slot.Start = DateTime.Now.AddDays(day).Date;
-
-                    // Increment day
-                    day += 1;
-
-                    // End date
-                    slot.End = DateTime.Now.AddDays(day).Date;
-
-                    var bookings = beacon.Bookings.Where(booking => booking.Start < slot.Start && booking.End > slot.End);
-                    slot.Bookings = bookings.Select(booking => new TimeslotBooking()
-                    {
-                        ContentId = booking.ContentId,
-                        ContentTitle = booking.Description
-                    }).ToList();
-
-                    firstWeek.Timeslots.Add(slot);
-                }
+                currentDate = currentDate.AddHours(1);
+                slots.Add(newTimeslot);                
             }
 
-            return null;
+            return slots;
         }
     }
 }

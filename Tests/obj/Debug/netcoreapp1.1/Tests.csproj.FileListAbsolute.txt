@@ -1,0 +1,13 @@
+/Users/adam/Documents/Development/dotNetCore/NearbyContentAPI/Tests/bin/Debug/netcoreapp1.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll
+/Users/adam/Documents/Development/dotNetCore/NearbyContentAPI/Tests/bin/Debug/netcoreapp1.1/xunit.runner.utility.netstandard15.dll
+/Users/adam/Documents/Development/dotNetCore/NearbyContentAPI/Tests/bin/Debug/netcoreapp1.1/xunit.runner.reporters.netstandard15.dll
+/Users/adam/Documents/Development/dotNetCore/NearbyContentAPI/Tests/bin/Debug/netcoreapp1.1/Tests.deps.json
+/Users/adam/Documents/Development/dotNetCore/NearbyContentAPI/Tests/bin/Debug/netcoreapp1.1/Tests.runtimeconfig.json
+/Users/adam/Documents/Development/dotNetCore/NearbyContentAPI/Tests/bin/Debug/netcoreapp1.1/Tests.runtimeconfig.dev.json
+/Users/adam/Documents/Development/dotNetCore/NearbyContentAPI/Tests/bin/Debug/netcoreapp1.1/Tests.dll
+/Users/adam/Documents/Development/dotNetCore/NearbyContentAPI/Tests/bin/Debug/netcoreapp1.1/Tests.pdb
+/Users/adam/Documents/Development/dotNetCore/NearbyContentAPI/Tests/bin/Debug/netcoreapp1.1/API.dll
+/Users/adam/Documents/Development/dotNetCore/NearbyContentAPI/Tests/bin/Debug/netcoreapp1.1/API.pdb
+/Users/adam/Documents/Development/dotNetCore/NearbyContentAPI/Tests/obj/Debug/netcoreapp1.1/Tests.AssemblyInfo.cs
+/Users/adam/Documents/Development/dotNetCore/NearbyContentAPI/Tests/obj/Debug/netcoreapp1.1/Tests.dll
+/Users/adam/Documents/Development/dotNetCore/NearbyContentAPI/Tests/obj/Debug/netcoreapp1.1/Tests.pdb
