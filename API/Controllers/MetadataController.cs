@@ -6,6 +6,7 @@ using API.Controllers.Models;
 using API.DataLogic.Models;
 using API.DataLogic;
 using Microsoft.AspNetCore.Mvc;
+using API.DataLogic.ViewModels;
 
 namespace API.Controllers
 {
@@ -28,14 +29,26 @@ namespace API.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post(string key, string value)
+        public SubmissionStatus Post(string key, string value)
         {
-            if(string.IsNullOrEmpty(key) || string.IsNullOrEmpty(value))
+            var status = new SubmissionStatus();
+
+            try
             {
-                throw new ArgumentNullException();
+                if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentNullException();
+                }
+
+                this.dataLogic.AddMetadata(key, value);
+            }
+            catch (Exception ex)
+            {
+                status.Messages.Add(ex.Message);
+                status.StatusCode = SubmissionStatusCode.Success;
             }
 
-            this.dataLogic.AddMetadata(key, value);
+            return status;
         }
 
         /// <summary>
@@ -44,14 +57,26 @@ namespace API.Controllers
         /// <param name="key">Key</param>
         /// <param name="value">Value</param>
         [HttpDelete("")]
-        public void Delete(string key, string value)
+        public SubmissionStatus Delete(string key, string value)
         {
-            if(string.IsNullOrEmpty(key) || string.IsNullOrEmpty(value))
+            var status = new SubmissionStatus();
+
+            try
             {
-                throw new ArgumentNullException();
+                if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentNullException();
+                }
+
+                this.dataLogic.DeleteMetadata(key, value);
+            }
+            catch (Exception ex)
+            {
+                status.Messages.Add(ex.Message);
+                status.StatusCode = SubmissionStatusCode.Success;
             }
 
-            this.dataLogic.DeleteMetadata(key, value);
+            return status;
         }
 
         /// <summary>
@@ -59,14 +84,26 @@ namespace API.Controllers
         /// </summary>
         /// <param name="key">Key</param>
         [HttpDelete("")]
-        public void Delete(string key)
+        public SubmissionStatus Delete(string key)
         {
-            if(string.IsNullOrEmpty(key))
+            var status = new SubmissionStatus();
+
+            try
             {
-                throw new ArgumentNullException();
+                if (string.IsNullOrEmpty(key))
+                {
+                    throw new ArgumentNullException();
+                }
+
+                this.dataLogic.DeleteMetadata(key, null);
+            }
+            catch (Exception ex)
+            {
+                status.Messages.Add(ex.Message);
+                status.StatusCode = SubmissionStatusCode.Success;
             }
 
-            this.dataLogic.DeleteMetadata(key, null);
+            return status;
         }
     }
 }

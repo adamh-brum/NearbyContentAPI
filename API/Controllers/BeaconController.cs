@@ -6,6 +6,7 @@ using API.Controllers.Models;
 using API.DataLogic.Models;
 using API.DataLogic;
 using Microsoft.AspNetCore.Mvc;
+using API.DataLogic.ViewModels;
 
 namespace API.Controllers
 {
@@ -16,7 +17,7 @@ namespace API.Controllers
 
         public BeaconController()
         {
-            this.dataLogic = new SqliteBeaconDataLogic();;
+            this.dataLogic = new SqliteBeaconDataLogic(); ;
         }
 
         // GET api/values
@@ -28,15 +29,26 @@ namespace API.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post(string id, string name, string friendlyName, string location)
+        public SubmissionStatus Post(string id, string name, string friendlyName, string location)
         {
-            Guid guid = Guid.Parse(id);
+            SubmissionStatus status = new SubmissionStatus();
+            status.StatusCode = SubmissionStatusCode.Success;
 
-            // Add the beacon
-            this.dataLogic.AddBeacon(guid, name, friendlyName, location);
-        
-            // Return success response
-            //return CreatedAtRoute("Get", new { id = beacon.Id });
+            try
+            {
+
+                Guid guid = Guid.Parse(id);
+
+                // Add the beacon
+                this.dataLogic.AddBeacon(guid, name, friendlyName, location);
+            }
+            catch (Exception ex)
+            {
+                status.Messages.Add(ex.Message);
+                status.StatusCode = SubmissionStatusCode.Failure;
+            }
+
+            return status;
         }
 
         // // PUT api/values/5
@@ -49,8 +61,20 @@ namespace API.Controllers
         [HttpDelete("")]
         public void Delete(string id)
         {
-            Guid guid = Guid.Parse(id);
-            this.dataLogic.DeleteBeacon(guid);
+            SubmissionStatus status = new SubmissionStatus();
+
+            try
+            {
+                Guid guid = Guid.Parse(id);
+                this.dataLogic.DeleteBeacon(guid);
+            }
+            catch (Exception ex)
+            {
+                status.Messages.Add(ex.Message);
+                status.StatusCode = SubmissionStatusCode.Failure;
+            }
+
+            return status;
         }
     }
 }

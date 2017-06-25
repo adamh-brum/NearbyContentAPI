@@ -8,7 +8,7 @@ namespace API.DataLogic.ViewModels
     /// </summary>
     public class SubmissionStatus
     {
-        public SubmissionStatusCode StatusCode { get; set; }
+        public SubmissionStatusCode StatusCode { get; set; } = SubmissionStatusCode.Success;
 
         public List<string> Messages { get; set; } = new List<string>();
     }

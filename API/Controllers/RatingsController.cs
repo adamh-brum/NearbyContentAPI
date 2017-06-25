@@ -6,6 +6,7 @@ using API.Controllers.Models;
 using API.DataLogic.Models;
 using API.DataLogic;
 using Microsoft.AspNetCore.Mvc;
+using API.DataLogic.ViewModels;
 
 namespace API.Controllers
 {
@@ -16,7 +17,7 @@ namespace API.Controllers
 
         public RatingsController()
         {
-            this.dataLogic = new SqliteRatingsDataLogic();;
+            this.dataLogic = new SqliteRatingsDataLogic(); ;
         }
 
         // GET api/values
@@ -28,14 +29,27 @@ namespace API.Controllers
 
         // POST api/values
         [HttpPut]
-        public void Put(int contentId, int rating)
+        public SubmissionStatus Put(int contentId, int rating)
         {
-            if(rating != 1 && rating != -1){
-                // Users can only submit a rating of 1 or -1
-                throw new ArgumentOutOfRangeException("Ratings must fall within the correct range");
+            var status = new SubmissionStatus();
+
+            try
+            {
+                if (rating != 1 && rating != -1)
+                {
+                    // Users can only submit a rating of 1 or -1
+                    throw new ArgumentOutOfRangeException("Ratings must fall within the correct range");
+                }
+
+                this.dataLogic.UpdateRating(contentId, rating);
+            }
+            catch (Exception ex)
+            {
+                status.Messages.Add(ex.Message);
+                status.StatusCode = SubmissionStatusCode.Failure;
             }
 
-            this.dataLogic.UpdateRating(contentId, rating);
+            return status;
         }
     }
 }
