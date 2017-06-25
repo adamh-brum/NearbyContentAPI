@@ -59,7 +59,7 @@ namespace API.Controllers
 
         // DELETE api/values/5
         [HttpDelete("")]
-        public void Delete(string id)
+        public SubmissionStatus Delete(string id)
         {
             SubmissionStatus status = new SubmissionStatus();
 
