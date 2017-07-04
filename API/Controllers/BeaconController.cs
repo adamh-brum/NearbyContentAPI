@@ -34,16 +34,6 @@ namespace API.Controllers
             SubmissionStatus status = new SubmissionStatus();
             status.StatusCode = SubmissionStatusCode.Success;
 
-            var r = this.HttpContext.Request;
-            string documentContents;
-            using (System.IO.Stream receiveStream = r.Body)
-            {
-                using (System.IO.StreamReader readStream = new System.IO.StreamReader(receiveStream))
-                {
-                    documentContents = readStream.ReadToEnd();
-                }
-            }
-
             try
             {
 
