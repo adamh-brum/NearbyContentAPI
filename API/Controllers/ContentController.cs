@@ -55,9 +55,11 @@ namespace API.Controllers
                 StatusCode = SubmissionStatusCode.Success
             };
 
+            int contentId = 0;
+
             try
             {
-                int contentId = this.contentDataLogic.AddContent(shortDescription, content);
+                contentId = this.contentDataLogic.AddContent(shortDescription, content);
                 if (contentId == 0)
                 {
                     status.StatusCode = SubmissionStatusCode.Failure;

@@ -27,6 +27,7 @@ namespace API.Controllers
         /// <param name="locationId">Beacon UUID</param>
         /// <returns>Content at the given location</returns>
         [HttpGet("{locationId}")]
+        [Route("ByLocation")]
         public IEnumerable<ContentModel> Get(string locationId)
         {
             bool parsed = false;
@@ -66,10 +67,10 @@ namespace API.Controllers
         /// Shcedules content onto the system using the bookings
         /// </summary>
         /// <param name="bookings">The bookings</param>
-        [HttpPost]
-        public SubmissionStatus Post(IEnumerable<BeaconBookingModel> bookings)
+        [HttpPut]
+        public SubmissionStatus Put(BeaconBookingsModel bookings)
         {
-            return this.dataLogic.ScheduleContent(bookings);
+            return this.dataLogic.ScheduleContent(bookings.Bookings);
         }
     }
 }

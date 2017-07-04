@@ -29,18 +29,28 @@ namespace API.Controllers
 
         // POST api/values
         [HttpPost]
-        public SubmissionStatus Post(string id, string name, string friendlyName, string location)
+        public SubmissionStatus Post([FromBody]BeaconViewModel beacon)
         {
             SubmissionStatus status = new SubmissionStatus();
             status.StatusCode = SubmissionStatusCode.Success;
 
+            var r = this.HttpContext.Request;
+            string documentContents;
+            using (System.IO.Stream receiveStream = r.Body)
+            {
+                using (System.IO.StreamReader readStream = new System.IO.StreamReader(receiveStream))
+                {
+                    documentContents = readStream.ReadToEnd();
+                }
+            }
+
             try
             {
 
-                Guid guid = Guid.Parse(id);
+                Guid guid = Guid.Parse(beacon.Id);
 
                 // Add the beacon
-                this.dataLogic.AddBeacon(guid, name, friendlyName, location);
+                this.dataLogic.AddBeacon(guid, beacon.Name, beacon.FriendlyName, beacon.Location);
             }
             catch (Exception ex)
             {
