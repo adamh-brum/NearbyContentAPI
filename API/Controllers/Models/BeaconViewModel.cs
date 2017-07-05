@@ -8,9 +8,15 @@ namespace API.Controllers.Models
     /// </summary>
     public class BeaconViewModel
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string UUID { get; set; }
+
+        public string BeaconId { get; set; }
+
+        public string MinorVersion { get; set; }
+
+        public string MajorVersion { get; set; }
 
         public string FriendlyName { get; set; }
 

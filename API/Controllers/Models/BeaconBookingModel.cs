@@ -10,7 +10,7 @@ namespace API.Controllers.Models
     {
         public int ContentId { get; set; }
 
-        public Guid BeaconId { get; set; }
+        public int BeaconId { get; set; }
 
         public DateTime Start { get; set; }
 

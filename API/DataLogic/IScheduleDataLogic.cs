@@ -20,7 +20,7 @@ namespace API.DataLogic
         /// <param name="beaconId"></param>
         /// <param name="currentTime"></param>
         /// <returns></returns>
-        ViewModels.ScheduledContent GetScheduledContent(Guid beaconId, DateTime currentTime);
+        ViewModels.ScheduledContent GetScheduledContent(int beaconId, DateTime currentTime);
 
         /// <summary>
         /// A complex report, which weighs a range of factors to determine beacon availability

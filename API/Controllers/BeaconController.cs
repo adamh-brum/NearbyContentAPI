@@ -36,11 +36,37 @@ namespace API.Controllers
 
             try
             {
-
-                Guid guid = Guid.Parse(beacon.Id);
-
                 // Add the beacon
-                this.dataLogic.AddBeacon(guid, beacon.Name, beacon.FriendlyName, beacon.Location);
+                IList<string> errors = this.dataLogic.AddBeacon(beacon.UUID, beacon.BeaconId, beacon.MinorVersion, beacon.MajorVersion, beacon.FriendlyName, beacon.Location);
+                if(errors.Count > 0){
+                    status.Messages = errors.ToList();
+                    status.StatusCode = SubmissionStatusCode.Failure;
+                }
+            }
+            catch (Exception ex)
+            {
+                status.Messages.Add(ex.Message);
+                status.StatusCode = SubmissionStatusCode.Failure;
+            }
+
+            return status;
+        }
+
+        // POST api/values
+        [HttpPut]
+        public SubmissionStatus Put([FromBody]BeaconViewModel beacon)
+        {
+            SubmissionStatus status = new SubmissionStatus();
+            status.StatusCode = SubmissionStatusCode.Success;
+
+            try
+            {
+                // Add the beacon
+                IList<string> errors = this.dataLogic.UpdateBeacon(beacon.Id, beacon.UUID, beacon.BeaconId, beacon.MinorVersion, beacon.MajorVersion, beacon.FriendlyName, beacon.Location);
+                if(errors.Count > 0){
+                    status.Messages = errors.ToList();
+                    status.StatusCode = SubmissionStatusCode.Failure;
+                }
             }
             catch (Exception ex)
             {
@@ -59,14 +85,13 @@ namespace API.Controllers
 
         // DELETE api/values/5
         [HttpDelete("")]
-        public SubmissionStatus Delete(string id)
+        public SubmissionStatus Delete(int id)
         {
             SubmissionStatus status = new SubmissionStatus();
 
             try
             {
-                Guid guid = Guid.Parse(id);
-                this.dataLogic.DeleteBeacon(guid);
+                this.dataLogic.DeleteBeacon(id);
             }
             catch (Exception ex)
             {

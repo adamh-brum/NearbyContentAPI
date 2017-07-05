@@ -6,7 +6,7 @@ namespace API.Controllers.Models
 
     public class BeaconSchedule
     {
-        public Guid BeaconId { get; set; }
+        public int BeaconId { get; set; }
 
         public string BeaconFriendlyName { get; set; }
 

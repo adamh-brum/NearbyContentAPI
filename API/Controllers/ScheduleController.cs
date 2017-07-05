@@ -30,16 +30,10 @@ namespace API.Controllers
         [Route("ByLocation")]
         public IEnumerable<ContentModel> Get(string locationId)
         {
-            bool parsed = false;
-            Guid beaconId = Guid.Empty;
-            parsed = Guid.TryParse(locationId, out beaconId);
-            if(!parsed)
-            {
-                return null;
-            }
+            Beacon beacon = new SqliteBeaconDataLogic().GetBeacon(locationId);
 
             DateTime requestTime = DateTime.Now;
-            var content = this.dataLogic.GetScheduledContent(beaconId, requestTime);
+            var content = this.dataLogic.GetScheduledContent(beacon.Id, requestTime);
             return content.Content.Select(c => new ContentModel()
             {
                 Id = c.Id,

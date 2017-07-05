@@ -14,7 +14,7 @@ namespace API.DataLogic.Models
         public int ContentId { get; set; }
 
         [Required]
-        public Guid BeaconId { get; set; }
+        public int BeaconId { get; set; }
 
         [Required]
         public DateTime StartDateTime { get; set; }

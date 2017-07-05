@@ -8,7 +8,7 @@ namespace  API.DataLogic.Models
     /// </summary>
     public class BeaconAvailability
     {
-        public Guid BeaconId { get; set; }
+        public int BeaconId { get; set; }
 
         public string Location { get; set; }
 

@@ -15,7 +15,7 @@ namespace API.DataLogic
         /// <param name="beaconId">ID of the beacon</param>
         /// <param name="currentTime">Current time</param>
         /// <returns></returns>
-        public ViewModels.ScheduledContent GetScheduledContent(Guid beaconId, DateTime currentTime)
+        public ViewModels.ScheduledContent GetScheduledContent(int beaconId, DateTime currentTime)
         {
             using (var db = new ApplicationDbContext())
             {
@@ -64,7 +64,7 @@ namespace API.DataLogic
                 var schedule = db.ScheduledItems.Where(item => item.StartDateTime >= DateTime.Now);
                 foreach (var item in schedule)
                 {
-                    var beaconAvailabilityRecord = beaconAvailability.FirstOrDefault(c => c.BeaconId == item.BeaconId);
+                    var beaconAvailabilityRecord = beaconAvailability.FirstOrDefault(c => c.BeaconId == item.Id);
 
                     if (beaconAvailabilityRecord == null)
                     {
