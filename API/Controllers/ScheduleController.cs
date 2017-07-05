@@ -68,9 +68,9 @@ namespace API.Controllers
         /// </summary>
         /// <param name="bookings">The bookings</param>
         [HttpPut]
-        public SubmissionStatus Put(BeaconBookingsModel bookings)
+        public SubmissionStatus Put([FromBody]BeaconBookingsModel bookings)
         {
-            return this.dataLogic.ScheduleContent(bookings.Bookings);
+            return this.dataLogic.ScheduleContent(bookings?.Bookings);
         }
     }
 }
