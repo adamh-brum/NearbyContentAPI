@@ -167,18 +167,24 @@ namespace API.DataLogic
                     errors.Add("The Beacon ID provided is already in use by another beacon");
                 }
 
-                int majorInt = 0;
-                bool majorValid = int.TryParse(major, out majorInt);
-                if (!majorValid || majorInt <= 0)
+                if (!string.IsNullOrEmpty(major))
                 {
-                    errors.Add("The Major value must be a whole number greater than 0");
+                    int majorInt = 0;
+                    bool majorValid = int.TryParse(major, out majorInt);
+                    if (!majorValid || majorInt <= 0)
+                    {
+                        errors.Add("The Major value must be a whole number greater than 0");
+                    }
                 }
 
-                int minorInt = 0;
-                bool minorValid = int.TryParse(major, out majorInt);
-                if (!minorValid || minorInt <= 0)
+                if (!string.IsNullOrEmpty(minor))
                 {
-                    errors.Add("The Minor value must be a whole number greater than 0");
+                    int minorInt = 0;
+                    bool minorValid = int.TryParse(minor, out minorInt);
+                    if (!minorValid || minorInt <= 0)
+                    {
+                        errors.Add("The Minor value must be a whole number greater than 0");
+                    }
                 }
             }
 
