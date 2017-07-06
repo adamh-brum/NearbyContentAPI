@@ -5,6 +5,12 @@ namespace API.DataLogic
 
     public class ApplicationDbContext : DbContext
     {
+        public ApplicationDbContext()
+        {
+            // Ensure the db is created, and if not then create it.
+            this.Database.EnsureCreated();
+        }
+
         public DbSet<Beacon> Beacons { get; set; }
 
         public DbSet<Content> Content { get; set; }
@@ -17,8 +23,6 @@ namespace API.DataLogic
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // Ensure the db is created, and if not then create it.
-            this.Database.EnsureCreated();
             optionsBuilder.UseSqlite("Filename=./nearbycontent.db");
         }
     }
