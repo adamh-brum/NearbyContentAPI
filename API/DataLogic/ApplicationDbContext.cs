@@ -17,6 +17,8 @@ namespace API.DataLogic
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            // Ensure the db is created, and if not then create it.
+            this.Database.EnsureCreated();
             optionsBuilder.UseSqlite("Filename=./nearbycontent.db");
         }
     }
