@@ -8,8 +8,8 @@ using API.DataLogic;
 namespace API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170614120645_Initial")]
-    partial class Initial
+    [Migration("20170706163738_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,16 +18,22 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.DataLogic.Models.Beacon", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("FriendlyName")
+                    b.Property<string>("BeaconId")
                         .IsRequired();
+
+                    b.Property<string>("FriendlyName");
 
                     b.Property<string>("Location")
                         .IsRequired();
 
-                    b.Property<string>("Name")
+                    b.Property<string>("MajorVersion");
+
+                    b.Property<string>("MinorVersion");
+
+                    b.Property<string>("UUID")
                         .IsRequired();
 
                     b.HasKey("Id");
@@ -86,7 +92,7 @@ namespace API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("BeaconId");
+                    b.Property<int>("BeaconId");
 
                     b.Property<int>("ContentId");
 

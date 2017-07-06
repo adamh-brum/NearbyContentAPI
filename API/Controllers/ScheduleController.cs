@@ -32,6 +32,11 @@ namespace API.Controllers
         {
             Beacon beacon = new SqliteBeaconDataLogic().GetBeacon(locationId);
 
+            if(beacon == null)
+            {
+                return null; // No beacon means no content
+            }
+
             DateTime requestTime = DateTime.Now;
             var content = this.dataLogic.GetScheduledContent(beacon.Id, requestTime);
             return content.Content.Select(c => new ContentModel()

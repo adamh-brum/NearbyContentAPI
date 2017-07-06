@@ -47,7 +47,7 @@ namespace API.Controllers
 
         // POST api/values
         [HttpPost]
-        public SubmissionStatus Post(string shortDescription, string content)
+        public SubmissionStatus Post([FromBody]ContentViewModel content)
         {
             // Create content
             SubmissionStatus status = new SubmissionStatus()
@@ -59,7 +59,7 @@ namespace API.Controllers
 
             try
             {
-                contentId = this.contentDataLogic.AddContent(shortDescription, content);
+                contentId = this.contentDataLogic.AddContent(content.Title, content.Content);
                 if (contentId == 0)
                 {
                     status.StatusCode = SubmissionStatusCode.Failure;

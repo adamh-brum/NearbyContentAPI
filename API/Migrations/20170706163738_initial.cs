@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,10 +12,14 @@ namespace API.Migrations
                 name: "Beacons",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    FriendlyName = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    BeaconId = table.Column<string>(nullable: false),
+                    FriendlyName = table.Column<string>(nullable: true),
                     Location = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: false)
+                    MajorVersion = table.Column<string>(nullable: true),
+                    MinorVersion = table.Column<string>(nullable: true),
+                    UUID = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,7 +74,7 @@ namespace API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    BeaconId = table.Column<Guid>(nullable: false),
+                    BeaconId = table.Column<int>(nullable: false),
                     ContentId = table.Column<int>(nullable: false),
                     EndDateTime = table.Column<DateTime>(nullable: false),
                     StartDateTime = table.Column<DateTime>(nullable: false)

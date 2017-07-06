@@ -112,7 +112,8 @@ namespace API.DataLogic
                 using (var db = new ApplicationDbContext())
                 {
                     List<ScheduledItem> newScheduledItems = new List<ScheduledItem>();
-                    foreach (var booking in bookings)
+                    var bookingsList = bookings.ToList();
+                    foreach (var booking in bookingsList)
                     {
                         var beacon = beaconDataLogic.GetBeacon(booking.BeaconId);
                         if (beacon == null)
@@ -152,10 +153,10 @@ namespace API.DataLogic
                     db.SaveChanges();
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 status.StatusCode = SubmissionStatusCode.Failure;
-                status.Messages.Add("Critial error creating new scheduled items.");
+                status.Messages.Add($"Critial error creating new scheduled items: {ex.Message}");
             }
 
             return status;
