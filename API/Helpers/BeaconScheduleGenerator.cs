@@ -37,7 +37,11 @@ namespace API.Helpers
                 newTimeslot.Start = currentDate;
                 newTimeslot.End = currentDate.AddDays(7);
                 newTimeslot.Unit = TimeslotUnit.Weeks;
-                newTimeslot.Bookings = beaconAvailability.Bookings.Where(b => b.Start >= newTimeslot.Start && b.End <= newTimeslot.End).Select(booking => new TimeslotBooking()
+
+                // Select bookings which start or end in this period
+                newTimeslot.Bookings = beaconAvailability.Bookings.Where(b => 
+                (b.Start >= newTimeslot.Start && b.Start < newTimeslot.End) ||
+                (b.End > newTimeslot.Start && b.End <= newTimeslot.End)).Select(booking => new TimeslotBooking()
                 {
                     ContentId = booking.ContentId,
                     ContentTitle = booking.Description
@@ -45,7 +49,7 @@ namespace API.Helpers
                 newTimeslot.Timeslots = PopulateDaysOfWeekForBeacon(beaconAvailability, currentDate.Date, currentDate.AddDays(7).Date);
 
                 currentDate = currentDate.AddDays(7);
-                slots.Add(newTimeslot);                
+                slots.Add(newTimeslot);
             }
 
             return slots;
@@ -69,7 +73,7 @@ namespace API.Helpers
                 newTimeslot.Timeslots = PopulateHoursOfDayForBeacon(beaconAvailability, currentDate.Date, currentDate.AddDays(1).Date);
 
                 currentDate = currentDate.AddDays(1);
-                slots.Add(newTimeslot);                
+                slots.Add(newTimeslot);
             }
 
             return slots;
@@ -92,7 +96,7 @@ namespace API.Helpers
                 }).ToList();
 
                 currentDate = currentDate.AddHours(1);
-                slots.Add(newTimeslot);                
+                slots.Add(newTimeslot);
             }
 
             return slots;

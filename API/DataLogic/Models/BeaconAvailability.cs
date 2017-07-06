@@ -14,8 +14,6 @@ namespace  API.DataLogic.Models
 
         public string FriendlyName { get; set; }
 
-        public IList<BeaconBooking> Bookings { get; set; }
-
-        public IList<DateTime> FutureDates { get; set; }
+        public IEnumerable<BeaconBooking> Bookings { get; set; } 
     }
 }

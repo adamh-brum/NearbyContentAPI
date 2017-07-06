@@ -46,47 +46,26 @@ namespace API.DataLogic
         public IEnumerable<BeaconAvailability> GetFutureScheduledContent()
         {
             // This is a complex query, so need to draw on beacon and content data
-            IBeaconDataLogic beaconDataLogic = new SqliteBeaconDataLogic();
-            IContentDataLogic contentDataLogic = new SqliteContentDataLogic();
-
             List<BeaconAvailability> beaconAvailability = new List<BeaconAvailability>();
 
             using (var db = new ApplicationDbContext())
             {
-                beaconAvailability = db.Beacons.Select(b => new BeaconAvailability()
+                foreach(var beacon in db.Beacons)
                 {
-                    BeaconId = b.Id,
-                    Location = b.Location,
-                    FriendlyName = b.FriendlyName,
-                    Bookings = new List<BeaconBooking>()
-                }).ToList();
-
-                var schedule = db.ScheduledItems.Where(item => item.StartDateTime >= DateTime.Now);
-                foreach (var item in schedule)
-                {
-                    var beaconAvailabilityRecord = beaconAvailability.FirstOrDefault(c => c.BeaconId == item.Id);
-
-                    if (beaconAvailabilityRecord == null)
+                    var availability = new BeaconAvailability();
+                    availability.BeaconId = beacon.Id;
+                    availability.FriendlyName = beacon.FriendlyName;
+                    availability.Location = beacon.Location;
+                    availability.Bookings = db.ScheduledItems.Where(item => item.BeaconId == beacon.Id && item.EndDateTime >= DateTime.Now)
+                    .Select(b => new BeaconBooking()
                     {
-                        var beacon = beaconDataLogic.GetBeacon(item.BeaconId);
+                        Start = b.StartDateTime,
+                        End = b.EndDateTime,
+                        Description = db.Content.FirstOrDefault(c => c.Id == b.ContentId).Title,
+                        ContentId = b.ContentId
+                    }).ToList();
 
-                        if (beacon == null)
-                        {
-                            // This should never happen
-                            // So if it's happening, it indicates a bug
-                            // Therefore fail LOUDLY! 
-                            throw new ArgumentNullException("A beacon referenced in scheduled content no longer exists...");
-                        }
-                    }
-
-                    var content = contentDataLogic.GetContent(item.ContentId);
-                    beaconAvailabilityRecord.Bookings.Add(new BeaconBooking()
-                    {
-                        Start = item.StartDateTime,
-                        End = item.EndDateTime,
-                        Description = content.Title,
-                        ContentId = item.ContentId
-                    });
+                    beaconAvailability.Add(availability);
                 }
             }
 
@@ -131,15 +110,15 @@ namespace API.DataLogic
                             continue;
                         }
 
-                        bool datesValid = booking.Start > DateTime.Now && booking.End > booking.Start;
-                        if (!datesValid)
+                        // Remove all already scheduled items for this beacon
+                        var items = db.ScheduledItems.Where(scheduledItem => scheduledItem.ContentId == booking.ContentId)?.ToList();
+                        if (items != null || items.Count > 0)
                         {
-                            status.StatusCode = SubmissionStatusCode.Warning;
-                            status.Messages.Add($"Booking for content ID {booking.ContentId} failed. Bookings must be in the future and the end date must be after the start date.");
-                            continue;
+                            db.ScheduledItems.RemoveRange(items);
+                            db.SaveChanges();
                         }
 
-                        // All valid!
+                        // So, since this is an update, add new scheduled items
                         newScheduledItems.Add(new ScheduledItem()
                         {
                             BeaconId = booking.BeaconId,
@@ -149,7 +128,10 @@ namespace API.DataLogic
                         });
                     }
 
+                    // Add the new items
                     db.ScheduledItems.AddRange(newScheduledItems);
+
+                    // Save the deletions and new items
                     db.SaveChanges();
                 }
             }
