@@ -110,7 +110,7 @@ namespace API.DataLogic
         {
             using (var db = new ApplicationDbContext())
             {
-                return db.Beacons.FirstOrDefault(b => b.UUID == uuid);
+                return db.Beacons.FirstOrDefault(b => b.UUID.ToUpper().Trim() == uuid.ToUpper().Trim());
             }
         }
 
