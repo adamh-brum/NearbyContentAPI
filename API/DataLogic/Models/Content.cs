@@ -1,6 +1,7 @@
 namespace API.DataLogic.Models
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,5 +16,7 @@ namespace API.DataLogic.Models
 
         [Required]
         public string Value { get; set; }
+
+        public string Tags { get; set; }
     }
 }

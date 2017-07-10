@@ -45,6 +45,8 @@ namespace API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Tags");
+
                     b.Property<string>("Title")
                         .IsRequired();
 

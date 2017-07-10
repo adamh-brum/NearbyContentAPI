@@ -15,8 +15,9 @@ namespace API.DataLogic
         /// </summary>
         /// <param name="title">The title for the content</param>
         /// <param name="content">Content</param>
+        /// <param name="tags">Tags, which make the content easy to identify</param>
         /// <returns>Content ID</returns>
-        int AddContent(string title, string content);
+        int AddContent(string title, string content, IEnumerable<string> tags);
 
         /// <summary>
         /// Returns the content that matches the given ID

@@ -15,13 +15,16 @@ namespace API.DataLogic
         /// </summary>
         /// <param name="title">The title for the content</param>
         /// <param name="content">Content</param>
+        /// <param name="tags">The tags</param>
         /// <returns>Content ID</returns>
-        public int AddContent(string title, string content)
+        public int AddContent(string title, string content, IEnumerable<string> tags)
         {
+            // Add the content, and any tags (if applicable)
             Content newObject = new Content()
             {
                 Title = title,
-                Value = content
+                Value = content,
+                Tags = tags == null || tags.Count() == 0 ? null : string.Join(",", tags)
             };
 
             using (var db = new ApplicationDbContext())

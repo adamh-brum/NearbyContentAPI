@@ -45,7 +45,8 @@ namespace API.Controllers
                 LocationName = content.Location,
                 RequestDateTime = requestTime,
                 ContentShortDescription = c.Title,
-                Content = c.Value
+                Content = c.Value,
+                Tags = c.Tags?.Split(',').ToList()
             });
         }
 

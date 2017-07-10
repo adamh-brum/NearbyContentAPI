@@ -32,6 +32,7 @@ namespace API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Tags = table.Column<string>(nullable: true),
                     Title = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: false)
                 },

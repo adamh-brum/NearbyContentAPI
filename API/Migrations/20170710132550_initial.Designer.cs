@@ -8,7 +8,7 @@ using API.DataLogic;
 namespace API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170706163738_initial")]
+    [Migration("20170710132550_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,6 +45,8 @@ namespace API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Tags");
 
                     b.Property<string>("Title")
                         .IsRequired();

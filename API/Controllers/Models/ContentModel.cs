@@ -1,6 +1,7 @@
 namespace API.Controllers.Models
 {
     using System;
+    using System.Collections.Generic;
 
     public class ContentModel
     {
@@ -13,5 +14,7 @@ namespace API.Controllers.Models
         public string ContentShortDescription { get; set; }
 
         public string Content { get; set; }
+
+        public List<string> Tags { get; set; }
     }
 }

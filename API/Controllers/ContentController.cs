@@ -23,10 +23,16 @@ namespace API.Controllers
         /// </summary>
         private IScheduleDataLogic scheduleDataLogic;
 
+        /// <summary>
+        /// The data logic to access content schedule
+        /// </summary>
+        private IMetadataDataLogic metadataDataLogic;
+
         public ContentController()
         {
             this.contentDataLogic = new SqliteContentDataLogic();
             this.scheduleDataLogic = new SqliteScheduleDataLogic();
+            this.metadataDataLogic = new SqliteMetadataDataLogic();
         }
 
         // GET api/values
@@ -39,10 +45,16 @@ namespace API.Controllers
         // GET api/values
         [HttpGet]
         [Route("All")]
-        public IEnumerable<Content> Get()
+        public IEnumerable<ContentViewModel> Get()
         {
             var content = this.contentDataLogic.GetContent().ToList();
-            return content;
+            return content.Select(c => new ContentViewModel()
+            {
+                Id = c.Id,
+                Title = c.Title,
+                Content = c.Value,
+                Tags = c.Tags.Split(',').ToList()
+            });
         }
 
         // POST api/values
@@ -57,9 +69,24 @@ namespace API.Controllers
 
             int contentId = 0;
 
+            if (content.Tags != null)
+            {
+                var contentTags = this.metadataDataLogic.GetMetadata("ContentTags");
+                if (contentTags == null || contentTags.Count() == 0)
+                {
+                    contentTags = content.Tags;
+                }
+
+                contentTags = contentTags.Intersect(content.Tags);
+                foreach (var contentTag in contentTags)
+                {
+                    this.metadataDataLogic.AddMetadata("ContentTags", contentTag);
+                }
+            }
+
             try
             {
-                contentId = this.contentDataLogic.AddContent(content.Title, content.Content);
+                contentId = this.contentDataLogic.AddContent(content.Title, content.Content, content.Tags);
                 if (contentId == 0)
                 {
                     status.StatusCode = SubmissionStatusCode.Failure;
