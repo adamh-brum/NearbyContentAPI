@@ -93,10 +93,10 @@ namespace API.Controllers
                     status.Messages.Add("Write to database failed for new content");
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 status.StatusCode = SubmissionStatusCode.Failure;
-                status.Messages.Add("Critical error.");
+                status.Messages.Add($"Critical error. Exception {ex.Message}. Inner: {ex.InnerException?.Message}");
             }
 
             return status;
