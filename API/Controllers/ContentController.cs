@@ -53,7 +53,7 @@ namespace API.Controllers
                 Id = c.Id,
                 Title = c.Title,
                 Content = c.Value,
-                Tags = c.Tags.Split(',').ToList()
+                Tags = string.IsNullOrEmpty(c.Tags) ? null : c.Tags.Split(',').ToList()
             });
         }
 
