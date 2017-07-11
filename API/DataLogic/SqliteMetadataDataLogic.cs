@@ -37,13 +37,18 @@ namespace API.DataLogic
         {
             using (var db = new ApplicationDbContext())
             {
-                db.Metadata.Add(new Metadata()
-                {
-                    Key = key,
-                    Value = value
-                });
+                var metadata = db.Metadata.Where(m => m.Key == key && m.Value == value);
 
-                db.SaveChanges();
+                if (metadata.Count() == 0)
+                {
+                    db.Metadata.Add(new Metadata()
+                    {
+                        Key = key,
+                        Value = value
+                    });
+
+                    db.SaveChanges();
+                }
             }
         }
 
@@ -58,12 +63,12 @@ namespace API.DataLogic
             {
                 throw new ArgumentNullException(nameof(key));
             }
-            
+
             using (var db = new ApplicationDbContext())
             {
                 var criteria = db.Metadata.Where(metadata => metadata.Key == key);
 
-                if(!string.IsNullOrEmpty(value))
+                if (!string.IsNullOrEmpty(value))
                 {
                     criteria = criteria.Where(metadata => metadata.Value == value);
                 }
