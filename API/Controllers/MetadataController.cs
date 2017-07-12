@@ -63,39 +63,12 @@ namespace API.Controllers
 
             try
             {
-                if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(value))
-                {
-                    throw new ArgumentNullException();
-                }
-
-                this.dataLogic.DeleteMetadata(key, value);
-            }
-            catch (Exception ex)
-            {
-                status.Messages.Add(ex.Message);
-                status.StatusCode = SubmissionStatusCode.Success;
-            }
-
-            return status;
-        }
-
-        /// <summary>
-        /// Deletes metadata item(s) that match the given key 
-        /// </summary>
-        /// <param name="key">Key</param>
-        [HttpDelete("")]
-        public SubmissionStatus Delete(string key)
-        {
-            var status = new SubmissionStatus();
-
-            try
-            {
                 if (string.IsNullOrEmpty(key))
                 {
                     throw new ArgumentNullException();
                 }
 
-                this.dataLogic.DeleteMetadata(key, null);
+                this.dataLogic.DeleteMetadata(key, value);
             }
             catch (Exception ex)
             {
