@@ -57,6 +57,27 @@ namespace API.Controllers
             });
         }
 
+        [HttpDelete]
+        public SubmissionStatus Delete(int id)
+        {
+            SubmissionStatus status = new SubmissionStatus()
+            {
+                StatusCode = SubmissionStatusCode.Success
+            };
+
+            try
+            {
+                this.contentDataLogic.DeleteContent(id);
+            }
+            catch (System.Exception ex)
+            {
+                status.StatusCode = SubmissionStatusCode.Failure;
+                status.Messages.Add(ex.Message);
+            }
+
+            return status;
+        }
+
         // POST api/values
         [HttpPost]
         public SubmissionStatus Post([FromBody]ContentViewModel content)
