@@ -93,13 +93,8 @@ namespace API.Controllers
             if (content.Tags != null)
             {
                 var contentTags = this.metadataDataLogic.GetMetadata("ContentTags");
-                if (contentTags == null || contentTags.Count() == 0)
-                {
-                    contentTags = content.Tags;
-                }
-
-                contentTags = contentTags.Intersect(content.Tags);
-                foreach (var contentTag in contentTags)
+                var newTags = content.Tags.Except(contentTags);
+                foreach (var contentTag in newTags)
                 {
                     this.metadataDataLogic.AddMetadata("ContentTags", contentTag);
                 }
