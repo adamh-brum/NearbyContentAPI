@@ -8,6 +8,12 @@ namespace API.DataLogic
     public interface IMetadataDataLogic
     {
         /// <summary>
+        /// Gets all metadata
+        /// </summary>
+        /// <returns>Values that match the key</returns>
+        IEnumerable<Metadata> GetMetadata();
+
+        /// <summary>
         /// Gets all metadata with the given key
         /// </summary>
         /// <param name="key">Key </param>

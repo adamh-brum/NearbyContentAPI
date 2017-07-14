@@ -16,6 +16,20 @@ namespace API.DataLogic
         /// </summary>
         /// <param name="key">Any metadata values with this key will be returned</param>
         /// <returns>All values matching the key</returns>
+        public IEnumerable<Metadata> GetMetadata()
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                return db.Metadata.ToList();
+            }
+        }
+
+        /// <summary>
+        /// Gets all metadata values that match the specified key
+        /// Does not return the key as the caller already knows this!
+        /// </summary>
+        /// <param name="key">Any metadata values with this key will be returned</param>
+        /// <returns>All values matching the key</returns>
         public IEnumerable<string> GetMetadata(string key)
         {
             List<string> metadataValues = new List<string>();

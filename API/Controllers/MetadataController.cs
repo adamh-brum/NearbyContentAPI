@@ -27,6 +27,14 @@ namespace API.Controllers
             return this.dataLogic.GetMetadata(key);
         }
 
+        // GET api/values
+        [HttpGet]
+        [Route("All")]
+        public IEnumerable<Metadata> Get()
+        {
+            return this.dataLogic.GetMetadata();
+        }
+
         // POST api/values
         [HttpPost]
         public SubmissionStatus Post(string key, string value)
