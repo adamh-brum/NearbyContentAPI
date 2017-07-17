@@ -64,6 +64,20 @@ namespace API.Controllers
         }
 
         /// <summary>
+        /// Returns the availability for every single beacon, based on the schedule, from today onwards
+        /// Historical bookings are filtered out to reduce response size
+        /// </summary>
+        /// <returns>All future bookings and availability of beacons</returns>
+        [HttpGet]
+        [Route("Raw")]
+        public IEnumerable<BeaconAvailability> GetRaw()
+        {
+            var schedule = new List<BeaconSchedule>();
+            var availability = this.dataLogic.GetFutureScheduledContent();
+            return availability.ToList();
+        }
+
+        /// <summary>
         /// Shcedules content onto the system using the bookings
         /// </summary>
         /// <param name="bookings">The bookings</param>
