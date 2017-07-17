@@ -26,7 +26,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="locationId">Beacon UUID</param>
         /// <returns>Content at the given location</returns>
-        [HttpGet("{locationId}")]
+        [HttpGet]
         [Route("ByLocation")]
         public IEnumerable<ContentModel> Get(string locationId)
         {
